@@ -7,6 +7,7 @@
     "dev": "npx parcel index.html"
   },
   "dependencies": {
+    "socket.io-client": "^2.1.1",
     "vue": "^2.5.16",
     "vue-hot-reload-api": "^2.3.0",
     "vue-router": "^3.0.1"

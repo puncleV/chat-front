@@ -25,7 +25,7 @@ const router = new Router({
       redirect: '/rooms'
     },
     {
-      name: 'login',
+      name: 'Login',
       path: '/login',
       component: () => {
         return import('../components/login')
@@ -52,14 +52,14 @@ const router = new Router({
       beforeEnter: requireAuth
     },
     {
-      name: 'logout',
+      name: 'Logout',
       path: '/logout',
       beforeEnter: async (to, from, next) => {
         const { status, message } = await AuthApi.logout()
 
         if (status === 'success') {
           next({
-            name: 'login'
+            name: 'Login'
           })
         } else {
           alert(`${status} ${message}`)

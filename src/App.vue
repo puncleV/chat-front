@@ -5,13 +5,16 @@
 </template>
 
 <script>
+import socket from 'socket.io-client'
 export default {
   name: 'app',
-  data: function () {
-    return {
-    }
+  created () {
+    this.socket = socket('http://localhost:4444')
   },
-  methods: {
+  data () {
+    return {
+      socket: null
+    }
   }
 }
 </script>

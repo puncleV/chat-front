@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     onLogout: function () {
-      this.$router.replace({name: 'logout'})
+      this.$router.replace({name: 'Logout'})
     }
   }
 }
