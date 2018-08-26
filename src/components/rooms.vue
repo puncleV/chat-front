@@ -7,6 +7,10 @@
                 <input v-model="roomName"/>
             </label>
             <label>
+                private
+                <input type="checkbox" v-model="isPrivate"/>
+            </label>
+            <label>
                 Room id:
                 <input v-model="roomId"/>
             </label>
@@ -33,7 +37,7 @@ export default {
   methods: {
     createRoom () {
       if (typeof this.roomName === 'string') {
-        this.socket.emit('create room', this.roomName)
+        this.socket.emit('create room', this.roomName, this.isPrivate ? 1 : 0)
       }
     },
     addRoom () {
@@ -45,7 +49,8 @@ export default {
   data () {
     return {
       roomName: '',
-      roomId: ''
+      roomId: '',
+      isPrivate: 0
     }
   }
 }

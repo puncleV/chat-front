@@ -12,15 +12,21 @@ export default {
   created () {
     this.socket = socketClient('http://localhost:4444')
 
-    this.socket.on('rooms', rooms => {
-      this.rooms = rooms
-    })
-
-    this.socket.on('new room', room => {
-      this.rooms.push(room)
-    })
+    this.socket.on('rooms', this.onRooms.bind(this))
+    this.socket.on('new room', this.onNewRoom.bind(this))
+    this.socket.on('create room success', this.onNewRoom.bind(this))
+    this.socket.on('create room error', this.onCreateError.bind(this))
   },
   methods: {
+    onRooms: function (rooms) {
+      this.rooms = rooms
+    },
+    onNewRoom: function (room) {
+      this.rooms.push(room)
+    },
+    onCreateError: function (msg) {
+      window.alert(msg)
+    }
   },
   data () {
     return {
