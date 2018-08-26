@@ -3,9 +3,6 @@ import Router from 'vue-router'
 import AuthApi from '../api/auth'
 
 Vue.use(Router)
-import socketClient from 'socket.io-client'
-
-let socket = null
 
 const requireAuth = async (to, from, next) => {
   const checkResult = await AuthApi.checkLogin()
@@ -17,9 +14,7 @@ const requireAuth = async (to, from, next) => {
       query: { redirect: to.fullPath }
     })
   } else {
-    if (socket === null) {
-      socket = socketClient('http://localhost:4444')
-    }
+
 
     next()
   }
@@ -54,11 +49,6 @@ const router = new Router({
     {
       path: '/rooms',
       name: 'Rooms',
-      props: () => {
-        return {
-          socket
-        }
-      },
       component: () => {
         return import('../components/rooms')
       },
@@ -71,10 +61,7 @@ const router = new Router({
         const { status, message } = await AuthApi.logout()
 
         if (status === 'success') {
-          if(socket !== null) {
-            socket.close()
-            socket = null
-          }
+          localStorage.removeItem('username')
           next({
             name: 'Login'
           })
