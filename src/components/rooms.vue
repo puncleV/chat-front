@@ -11,6 +11,9 @@ import AppHeader from './app-header'
 export default {
   name: 'Rooms',
   components: { AppHeader },
+  props: ['socket'],
+  created () {
+  },
   methods: {
   },
   data: function () {
