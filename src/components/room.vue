@@ -16,6 +16,11 @@ export default {
   created () {
     this.socket.emit('join room', this.$route.params.hash)
   },
+
+  beforeDestroy () {
+    this.socket.emit('leave room', this.$route.params.hash)
+  },
+
   methods: {}
 }
 </script>

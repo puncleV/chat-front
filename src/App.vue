@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <router-view :socket="socket" :rooms="rooms" class="content"/>
+        <router-view :socket="socket" :rooms="rooms" leave-room="onLeaveRoom" class="content"/>
     </div>
 </template>
 
@@ -56,7 +56,9 @@ export default {
     onUserLeave: function ({ username, roomHash }) {
       Vue.set(this.rooms[roomHash], 'usersCount', this.rooms[roomHash].usersCount - 1)
 
-      if (this.rooms[roomHash].users) {
+      if (username === localStorage.getItem('username')) {
+        Vue.set(this.rooms[roomHash], 'users', [])
+      } else if (this.rooms[roomHash].users) {
         Vue.set(this.rooms[roomHash], 'users', this.rooms[roomHash].users.filter(user => user !== username))
       }
     }
