@@ -55,6 +55,14 @@ const router = new Router({
       beforeEnter: requireAuth
     },
     {
+      path: '/rooms/:hash',
+      name: 'Room',
+      component: () => {
+        return import('../components/room')
+      },
+      beforeEnter: requireAuth
+    },
+    {
       name: 'Logout',
       path: '/logout',
       beforeEnter: async (to, from, next) => {

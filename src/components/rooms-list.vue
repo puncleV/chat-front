@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="rooms.length" v-for="room of sortedRooms" v-bind:key="room.id">
+        <div v-if="sortedRooms.length" v-for="room of sortedRooms" v-bind:key="room.hash" @click="goToRoom(room.hash)">
             room
             {{ room }}
         </div>
@@ -11,10 +11,20 @@
 <script>
 export default {
   name: 'RoomsList',
-  props: ['rooms'],
+  props: ['rooms', 'socket'],
   computed: {
     sortedRooms: function () {
-      return Array.from(this.rooms).sort(a => !a.private)
+      return Object.values(this.rooms).sort(a => !a.private)
+    }
+  },
+  methods: {
+    goToRoom: function (hash) {
+      this.$router.push({
+        name: 'Room',
+        params: {
+          hash: hash
+        }
+      })
     }
   }
 }

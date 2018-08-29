@@ -6,6 +6,7 @@
 
 <script>
 import socketClient from 'socket.io-client'
+import Vue from 'vue'
 
 export default {
   name: 'app',
@@ -16,22 +17,46 @@ export default {
     this.socket.on('new room', this.onNewRoom.bind(this))
     this.socket.on('create room success', this.onNewRoom.bind(this))
     this.socket.on('create room error', this.onCreateError.bind(this))
+    this.socket.on('user joined', this.onUserJoined.bind(this))
+    this.socket.on('join room success', this.onJoinSuccess.bind(this))
+    this.socket.on('join room error', this.onJoinError.bind(this))
   },
   methods: {
     onRooms: function (rooms) {
-      this.rooms = rooms
+      rooms.forEach(room => {
+        Vue.set(this.rooms, room.hash, room)
+      })
     },
     onNewRoom: function (room) {
-      this.rooms.push(room)
+      Vue.set(this.rooms, room.hash, room)
     },
     onCreateError: function (msg) {
       window.alert(msg)
+    },
+    onJoinSuccess: function ({ username, roomHash, users }) {
+      Vue.set(this.rooms[roomHash], 'usersCount', this.rooms[roomHash].usersCount + 1)
+      Vue.set(this.rooms[roomHash], 'users', users)
+    },
+    onJoinError: function (msg) {
+      window.alert(msg)
+
+      this.$router.push({
+        name: 'Rooms'
+      })
+    },
+    onUserJoined: function ({ username, roomHash }) {
+      Vue.set(this.rooms[roomHash], 'usersCount', this.rooms[roomHash].usersCount + 1)
+
+      if (this.rooms[roomHash].users) {
+        this.rooms[roomHash].users.push(username)
+        Vue.set(this.rooms[roomHash], 'users', this.rooms[roomHash].users)
+      }
     }
   },
   data () {
     return {
       socket: null,
-      rooms: []
+      rooms: {}
     }
   }
 }
