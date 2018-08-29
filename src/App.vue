@@ -18,6 +18,7 @@ export default {
     this.socket.on('create room success', this.onNewRoom.bind(this))
     this.socket.on('create room error', this.onCreateError.bind(this))
     this.socket.on('user joined', this.onUserJoined.bind(this))
+    this.socket.on('user leave', this.onUserLeave.bind(this))
     this.socket.on('join room success', this.onJoinSuccess.bind(this))
     this.socket.on('join room error', this.onJoinError.bind(this))
   },
@@ -50,6 +51,13 @@ export default {
       if (this.rooms[roomHash].users) {
         this.rooms[roomHash].users.push(username)
         Vue.set(this.rooms[roomHash], 'users', this.rooms[roomHash].users)
+      }
+    },
+    onUserLeave: function ({ username, roomHash }) {
+      Vue.set(this.rooms[roomHash], 'usersCount', this.rooms[roomHash].usersCount - 1)
+
+      if (this.rooms[roomHash].users) {
+        Vue.set(this.rooms[roomHash], 'users', this.rooms[roomHash].users.filter(user => user !== username))
       }
     }
   },
