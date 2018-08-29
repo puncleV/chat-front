@@ -57,7 +57,7 @@ export default {
       Vue.set(this.rooms[roomHash], 'usersCount', this.rooms[roomHash].usersCount - 1)
 
       if (username === localStorage.getItem('username')) {
-        Vue.set(this.rooms[roomHash], 'users', [])
+        Vue.set(this.rooms[roomHash], 'users')
       } else if (this.rooms[roomHash].users) {
         Vue.set(this.rooms[roomHash], 'users', this.rooms[roomHash].users.filter(user => user !== username))
       }
