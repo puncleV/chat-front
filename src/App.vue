@@ -23,6 +23,9 @@ export default {
     this.socket.on('join room error', this.onJoinError.bind(this))
     this.socket.on('add room error', this.onAddError.bind(this))
     this.socket.on('remove room error', this.onRemoveError.bind(this))
+    this.socket.on('new message', this.onMessage.bind(this))
+    this.socket.on('new message success', this.onMessage.bind(this))
+    this.socket.on('new message error', this.onMessageError.bind(this))
   },
   methods: {
     onRooms: function (rooms) {
@@ -47,9 +50,10 @@ export default {
       window.alert(msg)
     },
 
-    onJoinSuccess: function ({ username, hash: roomHash, users }) {
+    onJoinSuccess: function ({ username, hash: roomHash, users, messages }) {
       Vue.set(this.rooms[roomHash], 'usersCount', this.rooms[roomHash].usersCount + 1)
       Vue.set(this.rooms[roomHash], 'users', users)
+      Vue.set(this.rooms[roomHash], 'messages', messages)
     },
 
     onJoinError: function (msg) {
@@ -74,9 +78,26 @@ export default {
 
       if (username === localStorage.getItem('username')) {
         Vue.set(this.rooms[roomHash], 'users')
+        Vue.set(this.rooms[roomHash], 'messages')
       } else if (this.rooms[roomHash].users) {
         Vue.set(this.rooms[roomHash], 'users', this.rooms[roomHash].users.filter(user => user !== username))
       }
+    },
+
+    onMessage: function ({ from, message, datetime, roomHash }) {
+      const roomMessages = this.rooms[roomHash].messages
+
+      roomMessages.push({
+        from,
+        text: message,
+        datetime
+      })
+
+      Vue.set(this.rooms[roomHash], 'messages', roomMessages)
+    },
+
+    onMessageError: function (msg) {
+      window.alert(msg)
     }
   },
   data () {
