@@ -12,7 +12,7 @@
             </label>
             <label>
                 Room id:
-                <input v-model="roomId"/>
+                <input v-model="hash"/>
             </label>
             <button @click="createRoom">create room</button>
             <button @click="addRoom">add private room</button>
@@ -36,20 +36,16 @@ export default {
   },
   methods: {
     createRoom () {
-      if (typeof this.roomName === 'string') {
-        this.socket.emit('create room', this.roomName, this.isPrivate ? 1 : 0)
-      }
+      this.socket.emit('create room', { name: this.roomName, type: this.isPrivate ? 1 : 0 })
     },
     addRoom () {
-      if (typeof this.roomId === 'string') {
-        this.socket.emit('add room', this.roomId)
-      }
+      this.socket.emit('add room', {hash: this.hash})
     }
   },
   data () {
     return {
       roomName: '',
-      roomId: '',
+      hash: '',
       isPrivate: 0
     }
   }

@@ -14,11 +14,11 @@ export default {
   components: {AppHeader},
   props: ['socket'],
   created () {
-    this.socket.emit('join room', this.$route.params.hash)
+    this.socket.emit('join room', { hash: this.$route.params.hash })
   },
 
   beforeDestroy () {
-    this.socket.emit('leave room', this.$route.params.hash)
+    this.socket.emit('leave room', { hash: this.$route.params.hash })
   },
 
   methods: {}

@@ -1,8 +1,11 @@
 <template>
     <div>
-        <div v-if="sortedRooms.length" v-for="room of sortedRooms" v-bind:key="room.hash" @click="goToRoom(room.hash)">
-            room
-            {{ room }}
+        <div v-if="sortedRooms.length" v-for="room of sortedRooms" v-bind:key="room.hash">
+            <div>Name: {{ room.name }}</div>
+            <div>Type: {{ room.type | typeFilter }}</div>
+            <div>Users: {{ room.usersCount }}</div>
+            <div @click="goToRoom(room.hash)">JOIN</div>
+            <div @click="removeRoom(room.hash)">x</div>
         </div>
         <div v-else >No rooms here.</div>
     </div>
@@ -18,6 +21,12 @@ export default {
     }
   },
   methods: {
+    removeRoom: function (hash) {
+      this.socket.emit('remove room', { hash })
+
+      delete this.rooms[hash]
+    },
+
     goToRoom: function (hash) {
       this.$router.push({
         name: 'Room',
