@@ -25,7 +25,7 @@ const router = new Router({
   routes: [
     {
       path: '*',
-      redirect: '/rooms'
+      redirect: '/login'
     },
     {
       name: 'Login',
@@ -38,7 +38,7 @@ const router = new Router({
 
         if (status === 'success') {
           next({
-            path: '/'
+            path: '/rooms'
           })
 
         } else {
