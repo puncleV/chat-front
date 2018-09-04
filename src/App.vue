@@ -11,7 +11,7 @@ import Vue from 'vue'
 export default {
   name: 'app',
   created () {
-    this.socket = socketClient('http://localhost:1734')
+    this.socket = socketClient('http://localhost:4444')
 
     this.socket.on('rooms', this.onRooms.bind(this))
     this.socket.on('new room', this.onNewRoom.bind(this))
