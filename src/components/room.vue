@@ -1,10 +1,12 @@
 <template>
     <div>
         <app-header></app-header>
-        <div v-for="message of messages" :key="message.from+message.datetime">
-            <div>from: {{ message.from }}</div>
-            <div>time: {{ message.datetime }}</div>
-            <div>text: {{ message.text }}</div>
+        <div class="messages">
+            <div class="message" v-for="message of messages" :key="message.from+message.datetime">
+                <div>from: {{ message.from }}</div>
+                <div>time: {{ message.datetime | datetimeFilter }}</div>
+                <div>text: {{ message.text }}</div>
+            </div>
         </div>
         <div>
             <label>
@@ -45,12 +47,39 @@ export default {
 
   computed: {
     messages: function () {
-      return this.rooms[this.hash].messages
+      if (this.rooms[this.hash] !== undefined) {
+        return this.rooms[this.hash].messages
+      }
+
+      return []
+    }
+  },
+
+  filters: {
+    datetimeFilter: function (datetime) {
+      return new Date(datetime).toLocaleString()
     }
   }
 }
 </script>
 
 <style scoped>
+     .messages {
+         display: flex;
+         flex-direction: column;
+         overflow-y: scroll;
+         height: 50rem;
+         padding: 5px;
+         margin: 5px;
+     }
 
+    .message {
+        background-color: #fff;
+        padding: 5px;
+        margin: 5px;
+    }
+
+    .message:nth-child(2n) {
+        background-color: aliceblue;
+    }
 </style>
