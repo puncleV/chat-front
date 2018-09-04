@@ -10,11 +10,11 @@
                 private
                 <input type="checkbox" v-model="isPrivate"/>
             </label>
+            <button @click="createRoom">create room</button>
             <label>
                 Room id:
                 <input v-model="hash"/>
             </label>
-            <button @click="createRoom">create room</button>
             <button @click="addRoom">add private room</button>
         </div>
         <rooms-list :socket="socket" :rooms="rooms"></rooms-list>
@@ -53,5 +53,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
